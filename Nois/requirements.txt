@@ -1,0 +1,39 @@
+asgiref==3.8.1
+astroid==3.2.4
+attrs==24.2.0
+dill==0.3.8
+Django==5.1.1
+django-phonenumber-field==8.0.0
+djangorestframework==3.15.2
+drf-spectacular==0.27.2
+GDAL==3.6.4
+inflection==0.5.1
+isort==5.13.2
+jsonschema==4.23.0
+jsonschema-specifications==2023.12.1
+mccabe==0.7.0
+phonenumbers==8.13.45
+platformdirs==4.3.2
+psycopg2-binary==2.9.9
+pylint==3.2.7
+pylint-django==2.5.5
+pylint-plugin-utils==0.8.2
+python-dotenv==1.0.1
+PyYAML==6.0.2
+referencing==0.35.1
+rpds-py==0.20.0
+sqlparse==0.5.1
+tomli==2.0.1
+tomlkit==0.13.2
+typing_extensions==4.12.2
+uritemplate==4.1.1
+
+
+'''
+
+Gestion des rôles dans ClientAdminForm et ProfessionalAdminForm :
+
+Dans les formulaires ClientAdminForm et ProfessionalAdminForm, tu modifies les choix disponibles pour le champ role, mais assure-toi que ces valeurs correspondent bien aux rôles attendus dans la logique métier (c'est-à-dire 'CLIENT' et 'PROFESSIONAL' sont les seules options possibles).
+Gestion des mots de passe dans les modèles Admin :
+
+Assure-toi que l'interface admin ne tente pas de sauvegarder un mot de passe en clair si celui-ci est modifié. Dans chaque méthode save_model, tu devrais t'assurer que le mot de passe est bien hashé avant la sauvegarde. Par exemple, tu pourrais faire :
