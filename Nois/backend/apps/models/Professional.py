@@ -3,37 +3,16 @@ from .Address import Address
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
 from .UserManager import User
+from .Profession import Profession
 
 User = get_user_model()
 
 class Professional(User):
-    PROFESSION_CHOICES = (
-        ("AMP", "Aide médico-psychologique"),
-        ("ANIMATEUR", "Animateur.ice"),
-        ("AUTRE", "Autre"),
-        ("AS", "Aide soignant.e"),
-        ("ASS", "Assistant.e de service social"),
-        ("ASSISTANT FAMILIAL", "Assistant.e familial.e"),
-        ("AVS", "Auxiliaire de vie sociale"),
-        ("CESF", "Conseiller.e en économie sociale et familiale"),
-        ("DEES", "Educateur.ice spécialisé.e"),
-        ("DEME", "Moniteur.ice éducateur.ice"),
-        ("EJE", "Educateur.ice de jeunes enfants"),
-        ("ERGO", "Ergothérapeute"),
-        ("ETS", "Educateur.ice technique spécialisé.e"),
-        ("KINE", "Masseur.se-kinésithérapeute"),
-        ("IFSI", "Infirmier.e"),
-        ("PSYCHOMOT", "Psychomotricien.ne"),
-        ("PUER", "Puericulteur.ice"),
-        ("TISF", "Technicien.ne d'intervention sociale et familiale"),
-    )
-
-    profession = models.CharField(
-        max_length=55,
-        choices=PROFESSION_CHOICES,
-        default="AUTRE",
-        blank=False,
-        null=False
+    profession = models.ForeignKey(
+        Profession,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
         )
     is_mobile = models.BooleanField(
         blank=False,
@@ -41,7 +20,8 @@ class Professional(User):
         default=True
         )
     intervention_radius = models.PositiveIntegerField(
-            validators=[MinValueValidator(1), MaxValueValidator(200)],
+            validators=[MinValueValidator(0), MaxValueValidator(200)],
+            default=0,
             help_text="Rayon d'intervention (km)"
             )
 

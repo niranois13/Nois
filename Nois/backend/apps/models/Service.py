@@ -13,8 +13,17 @@ class Service(BaseModel):
     ("VIE_QUOTIDIENNE", "Assistance à la vie quotidienne"),
     ("AUTRE", "Autre"),
     )
-    service_name = models.CharField(max_length=40, blank=False, null=False)
-    service_description = models.TextField(blank=False, null=False)
+    service_name = models.CharField(
+        max_length=40,
+        blank=False,
+        null=False
+        )
+
+    service_description = models.TextField(
+        blank=False,
+        null=False
+        )
+
     service_category = models.CharField(
         max_length=100,
         blank=False,
@@ -22,11 +31,13 @@ class Service(BaseModel):
         choices=SERVICE_CATEGORY_CHOICES,
         default="AUTRE"
         )
+
     custom_service_category = models.CharField(
         max_length=60,
         blank=True,
         null=True
         )
+
     professionals = models.ManyToManyField(
         'Professional',
         related_name='services',

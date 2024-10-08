@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import User, Client, Professional, ClientAddress, ProfessionalAddress, Service, Qualification, Appointment, AppointmentLink, Availability
+from .models import User, Client, Professional, ClientAddress, ProfessionalAddress, Profession, Service, Qualification, Appointment, AppointmentLink, Availability
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
@@ -79,11 +79,15 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('email', 'first_name', 'last_name', 'role')
     ordering = ('email',)
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'password')
 
     def save_model(self, request, obj, form, change):
         if form.cleaned_data.get('password1'):
             obj.set_password(form.cleaned_data['password1'])
+        if form.is_valid():
+            print("Form valid")  # Debug
+        else:
+            print(form.errors)
         super().save_model(request, obj, form, change)
 
 class CustomUserCreationForm(UserCreationForm):
@@ -151,12 +155,12 @@ class ClientAdminForm(forms.ModelForm):
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput,
-        required=True
+        required=False
     )
     password2 = forms.CharField(
         label="Password confirmation",
         widget=forms.PasswordInput,
-        required=True
+        required=False
     )
 
     class Meta:
@@ -237,21 +241,20 @@ class ClientAdmin(admin.ModelAdmin):
                 )}
         ),
     )
+    readonly_fields = ('password',)
 
     def save_model(self, request, obj, form, change):
-        if not change:  # Si c'est un nouvel objet
-            obj.set_password(form.cleaned_data['password1'])  # Utilise l'objet Professional directement
-        else:  # Si on modifie un objet existant
-            if form.cleaned_data.get('password1'):  # Si un nouveau mot de passe est défini
+        if not change:
+            obj.set_password(form.cleaned_data['password1'])
+        else:
+            if form.cleaned_data.get('password1'):
                 obj.set_password(form.cleaned_data['password1'])
-
-        # Mets à jour d'autres champs
         obj.email = form.cleaned_data['email']
         obj.first_name = form.cleaned_data['first_name']
         obj.last_name = form.cleaned_data['last_name']
         obj.is_active = form.cleaned_data['is_active']
 
-        obj.save()  # Sauvegarde l'objet Professional directement
+        obj.save()
         super().save_model(request, obj, form, change)
 
 # Professional
@@ -259,12 +262,12 @@ class ProfessionalAdminForm(forms.ModelForm):
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput,
-        required=True
+        required=False
     )
     password2 = forms.CharField(
         label="Password confirmation",
         widget=forms.PasswordInput,
-        required=True
+        required=False
     )
 
     class Meta:
@@ -301,8 +304,8 @@ class ProfessionalAdminForm(forms.ModelForm):
 
 class ProfessionalAdmin(admin.ModelAdmin):
     form = ProfessionalAdminForm
-
     inlines = [ProfessionalAddressInline]
+
     list_display = (
         'email',
         'first_name',
@@ -355,21 +358,27 @@ class ProfessionalAdmin(admin.ModelAdmin):
                 )}
         ),
     )
+    readonly_fields = ('password',)
 
     def save_model(self, request, obj, form, change):
-        if not change:  # Si c'est un nouvel objet
-            obj.set_password(form.cleaned_data['password1'])  # Utilise l'objet Professional directement
-        else:  # Si on modifie un objet existant
-            if form.cleaned_data.get('password1'):  # Si un nouveau mot de passe est défini
+        if not change:
+            obj.set_password(form.cleaned_data['password1'])
+        else:
+            if form.cleaned_data.get('password1'):
                 obj.set_password(form.cleaned_data['password1'])
-
-        # Mets à jour d'autres champs
         obj.email = form.cleaned_data['email']
         obj.first_name = form.cleaned_data['first_name']
         obj.last_name = form.cleaned_data['last_name']
         obj.is_active = form.cleaned_data['is_active']
+        obj.phone_number = form.cleaned_data['phone_number']
+        obj.is_mobile = form.cleaned_data['is_mobile']
+        obj.intervention_radius = form.cleaned_data['intervention_radius']
 
-        obj.save()  # Sauvegarde l'objet Professional directement
+        obj.save()
+        if form.is_valid():
+            print("Form valid")  # Debug
+        else:
+            print(form.errors)
         super().save_model(request, obj, form, change)
 
 
@@ -389,7 +398,6 @@ class AvailabilityInline(admin.TabularInline):
     model = Availability
     extra = 1
 
-@admin.register(Qualification)
 class QualificationAdmin(admin.ModelAdmin):
     list_display = (
         'degree',
@@ -409,7 +417,6 @@ class QualificationAdmin(admin.ModelAdmin):
         'professional__last_name'
         )
 
-@admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         'service_name',
@@ -428,7 +435,6 @@ class ServiceAdmin(admin.ModelAdmin):
         'professionals'
     ]
 
-@admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = (
         '__str__',
@@ -446,7 +452,19 @@ class AppointmentAdmin(admin.ModelAdmin):
         'appntmnt_link__professional__last_name'
         )
 
+class ProfessionAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+    )
+    search_fields = (
+        'name',
+        )
 
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Professional, ProfessionalAdmin)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Profession)
+admin.site.register(Qualification)
+admin.site.register(Appointment)
+admin.site.register(Service)

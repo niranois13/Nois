@@ -7,3 +7,4 @@ from .Professional import Professional, ProfessionalAddress
 from .Qualification import Qualification
 from .Service import Service
 from .UserManager import UserManager, User
+from .Profession import Profession

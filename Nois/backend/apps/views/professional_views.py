@@ -1,9 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from ..permissions import IsOwnerOrAdmin
-from ..models import Professional
+from ..models import Professional, ProfessionalAddress
 from ..serializers import ProfessionalSerializer
+from ..serializers.address_serializers import ProfessionalAddressSerializer
+from ..permissions import IsOwnerOrAdmin
 
 
 class ProfessionalViewSet(viewsets.ModelViewSet):
@@ -12,31 +13,43 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'list':
-            permission_classes = [IsAdminUser]
-        elif self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
-            permission_classes = [IsOwnerOrAdmin]
-        else:
-            permission_classes = [IsAuthenticated]
-        return [permission() for permission in permission_classes]
+            return [permissions.IsAdminUser()]
+        elif self.action in [
+            'retrieve', 'update', 'partial_update', 'destroy'
+            ]:
+            return [IsOwnerOrAdmin()]
+        return [permissions.AllowAny()]
 
-'''
-class ProfessionalRegistrationView(APIView):
-    @transaction.atomic
-    def post(self, request):
-        serializer = ProfessionalRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            professional = serializer.save()
-            return Response({
-                'message': 'Professional enregistré avec succes',
-                'professional_id': professional.id
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_object(self):
+        slug = self.kwargs.get('slug')
+        return Professional.objects.get(slug=slug)
 
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
 
-class ProfessionalListView(APIView):
-    permission_classes = [IsAdminUser]
-    def get(self, request):
-        professionals = Professional.objects.all()
-        serializer = ProfessionalListSerializer(professionals, many=True)
-        return Response(serializer.data)
-'''
+class ProfessionalAddressViewSet(viewsets.ModelViewSet):
+    queryset = ProfessionalAddress.objects.all()
+    serializer_class = ProfessionalAddressSerializer
+
+    def get_permissions(self):
+        if self.action in [
+            'update', 'partial_update', 'destroy'
+            ]:
+            return [IsOwnerOrAdmin()]
+        return [permissions.IsAuthenticated()]
+
+    def get_queryset(self):
+        professional_slug = self.kwargs.get('slug')
+        professional = get_object_or_404(
+            Professional, slug=professional_slug
+            )
+        return ProfessionalAddress.objects.filter(
+            professional=professional
+            )
+
+    def perform_create(self, serializer):
+        professional_slug = self.kwargs.get('slug')
+        professional = get_object_or_404(
+            Professional, slug=professional_slug
+            )
+        serializer.save(professional=professional)

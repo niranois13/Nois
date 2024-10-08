@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     'apps',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
     'phonenumber_field',
     'django.contrib.gis',
+    'geopy',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -162,7 +164,11 @@ STATIC_ROOT = BASE_DIR / 'backend' / 'static'
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'core.auth_token_handler.CookieJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
@@ -170,12 +176,32 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+# JWT Magic tricks!
+JWT_SIGNING_KEY_PATH = os.getenv('JWT_SIGNING_KEY_PATH')
+with open(JWT_SIGNING_KEY_PATH, 'r') as f:
+    JWT_SIGNING_KEY = f.read()
+
+JWT_PUBLIC_KEY_PATH = os.getenv('JWT_PUBLIC_KEY_PATH')
+with open(JWT_PUBLIC_KEY_PATH, 'r') as f:
+    JWT_PUBLIC_KEY = f.read()
+
+JWT_AUTH_COOKIE = 'access_token'
+JWT_COOKIE_LIFETIME = timedelta(minutes=60)
+SECURE_COOKIE = False #True in production!!
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = False #True in production!!
+
 SIMPLE_JWT = {
+    'ALGORITHM': 'RS256',
+    'SIGNING_KEY': JWT_SIGNING_KEY,
+    'VERIFYING_KEY': JWT_PUBLIC_KEY,
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
+
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Nois API',
@@ -193,12 +219,12 @@ EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
 
 # Django-Allauth settings
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_RATE_LIMITS = {
-    'confirm_email': 86400,
-}
+#ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+#ACCOUNT_EMAIL_REQUIRED = True
+#ACCOUNT_AUTHENTICATION_METHOD = 'email'
+#ACCOUNT_RATE_LIMITS = {
+#    'confirm_email': 86400,
+#}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
