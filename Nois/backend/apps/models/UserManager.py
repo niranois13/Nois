@@ -4,10 +4,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from phonenumber_field.modelfields import PhoneNumberField
+from django.utils import timezone
+from datetime import timedelta
 import uuid, random
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, role='NONE', phone_number='None', **extra_fields):
+    def create_user(self, email, password=None, role='NONE', **extra_fields):
         if not email:
             raise ValueError("Un email doit être fourni.")
         if role not in dict(User.ROLE_CHOICES).keys():
@@ -81,13 +83,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         unique=True
         )
+    email_verified = models.BooleanField(
+        default=False
+    )
+    email_activation_exp = models.DateTimeField(
+        default=timezone.now() + timedelta(days=1)
+    )
     role = models.CharField(
         max_length=20,
         choices=ROLE_CHOICES,
         default='NONE'
         )
     is_active = models.BooleanField(
-        default=True
+        default=False
         )
     is_staff = models.BooleanField(
         default=False

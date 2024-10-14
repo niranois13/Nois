@@ -185,7 +185,9 @@ JWT_PUBLIC_KEY_PATH = os.getenv('JWT_PUBLIC_KEY_PATH')
 with open(JWT_PUBLIC_KEY_PATH, 'r') as f:
     JWT_PUBLIC_KEY = f.read()
 
+REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'access_token'
+JWT_AUTH_REFRESH_COOKIE = 'refresh_token'
 JWT_COOKIE_LIFETIME = timedelta(minutes=60)
 SECURE_COOKIE = False #True in production!!
 CSRF_COOKIE_HTTPONLY = True
@@ -201,8 +203,6 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-
-
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Nois API',
     'DESCRIPTION': 'A platform connecting people with disabilities and liberal professionals in the healthcare and medico-social fields.',
@@ -217,6 +217,7 @@ EMAIL_PORT=os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS=os.getenv('EMAIL_USE_TLS')
 EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL=os.getenv('DEFAULT_FROM_EMAIL')
 
 # Django-Allauth settings
 #ACCOUNT_EMAIL_VERIFICATION = "mandatory"
@@ -230,5 +231,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+BACKEND_URL = 'http://127.0.0.1:8000'
 
 SITE_ID = 1

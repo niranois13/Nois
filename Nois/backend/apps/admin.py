@@ -438,12 +438,12 @@ class ServiceAdmin(admin.ModelAdmin):
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = (
         '__str__',
-        'appntmnt_datetime_start',
+        'start',
         'appntmnt_status'
         )
     list_filter = (
         'appntmnt_status',
-        'appntmnt_datetime_start'
+        'start'
         )
     search_fields = (
         'appntmnt_link__client__first_name',

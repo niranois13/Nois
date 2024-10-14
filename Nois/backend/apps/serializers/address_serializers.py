@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.gis.geos import Point
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderServiceError, GeocoderTimedOut
 from ..models import Address, ClientAddress, ProfessionalAddress
@@ -8,7 +9,6 @@ class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = [
-            'id',
             'street',
             'city',
             'postal_code',
@@ -18,10 +18,7 @@ class AddressSerializer(serializers.ModelSerializer):
             'location',
             'slug',
         ]
-        read_only_fields = [
-            'id',
-            'slug'
-            ]
+        read_only_fields = ['slug']
 
     def validate(self, data):
         address_str = f"{data.get('street')}, \
@@ -32,9 +29,10 @@ class AddressSerializer(serializers.ModelSerializer):
         try:
             location = geolocator.geocode(address_str, exactly_one=True)
             if location:
+                django_point = Point(location.longitude, location.latitude)
                 data['latitude'] = location.latitude
                 data['longitude'] = location.longitude
-                data['location'] = location.point
+                data['location'] = django_point
             else:
                 raise serializers.ValidationError(
                     "L'adresse fournie est invalide ou incomprise."
@@ -59,7 +57,9 @@ class AddressSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        address = Address(**validated_data)
+        print("Creating instance of:", self.Meta.model)
+        address = self.Meta.model(**validated_data)
+        print("Address instance created:", address)
         address.save()
         return address
 

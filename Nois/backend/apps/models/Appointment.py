@@ -26,9 +26,9 @@ class Appointment(BaseModel):
         on_delete=models.CASCADE,
         related_name='appointment'
         )
-    # Vérifier les DateTimeField + est-ce le bon fuseau horaire ?
-    appntmnt_datetime_start = models.DateTimeField()
-    appntmnt_datetime_end = models.DateTimeField()
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    description = models.TextField(blank=True, null=True)
     appntmnt_status = models.CharField(
         max_length=50,
         choices=APPOINTMENT_STATUS_CHOICES,
@@ -36,7 +36,7 @@ class Appointment(BaseModel):
         blank=False,
         null=False
         )
-    apppntmnt_location = models.CharField(
+    appntmnt_location = models.CharField(
         max_length=35,
         choices=LOCATION_CHOICES,
         default="",
@@ -67,10 +67,16 @@ class Appointment(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.appntmnt_location == 'DOMICILE':
-            self.client_address = self.client.address
+            try:
+                self.client_address = self.client.address_of_client
+            except ClientAddress.DoesNotExist:
+                self.client_address = None
             self.professional_address = None
         elif self.appntmnt_location == 'CABINET':
-            self.professional_address = self.professional.address
+            try:
+                self.professional_address = self.professional.address_of_professional
+            except ProfessionalAddress.DoesNotExist:
+                self.professional_address = None
             self.client_address = None
         elif self.appntmnt_location == 'XT':
             self.client_address = None
@@ -78,9 +84,7 @@ class Appointment(BaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Appointment of {self.appntmnt_link.client} \
-            with {self.appntmnt_link.professional}, on \
-                {self.appntmnt_datetime_start.strftime('%Y-%m-%d at %H:%M')}"
+        return f"Appointment of {self.appntmnt_link.client} with {self.appntmnt_link.professional}, on {self.start.strftime('%Y-%m-%d at %H:%M')}"
 
     class Meta:
         verbose_name="Appointment"

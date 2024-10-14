@@ -51,9 +51,11 @@ class Address(BaseModel):
         verbose_name_plural = "Adresses"
 
     def save(self, *args, **kwargs):
+        print("Saving instance of:", self.__class__)
         if self.latitude and self.longitude and not self.location:
             self.location = Point(self.longitude, self.latitude)
         super().save(*args, **kwargs)
+        print("Instance saved:", self)
 
     def __str__(self):
         return f"{self.street}, {self.postal_code} {self.city}, {self.country}"

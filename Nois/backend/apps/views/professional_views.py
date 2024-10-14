@@ -10,6 +10,7 @@ from ..permissions import IsOwnerOrAdmin
 class ProfessionalViewSet(viewsets.ModelViewSet):
     queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
+    lookup_field = 'slug'
 
     def get_permissions(self):
         if self.action == 'list':
@@ -18,11 +19,16 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
             'retrieve', 'update', 'partial_update', 'destroy'
             ]:
             return [IsOwnerOrAdmin()]
-        return [permissions.AllowAny()]
+        elif self.action =='create':
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
 
     def get_object(self):
-        slug = self.kwargs.get('slug')
-        return Professional.objects.get(slug=slug)
+        queryset = self.get_queryset()
+        slug = self.kwargs.get(self.lookup_field)
+        obj = get_object_or_404(queryset, slug=slug)
+        self.check_object_permissions(self.request, obj)
+        return obj
 
     def perform_create(self, serializer):
         return super().perform_create(serializer)

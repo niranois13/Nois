@@ -1,3 +1,10 @@
-from .client_views import ClientViewSet
-from .professional_views import ProfessionalViewSet
+from .client_views import ClientViewSet, ClientAddressViewSet
+from .professional_views import ProfessionalViewSet, ProfessionalAddressViewSet
 from .user_views import UserViewSet
+from .appointment_views import AppointmentViewSet
+from .client_appointment_views import ClientAppointmentViewSet
+from .professional_appointment_views import ProfessionalAppointmentViewSet
+from .act_acc_views import activate_account
+from .auth_views import CustomTokenObtainPairView
+from .logout_views import LogoutView
+from .reset_passw_views import password_reset_confirm

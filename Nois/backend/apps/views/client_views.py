@@ -38,7 +38,9 @@ class ClientAddressViewSet(viewsets.ModelViewSet):
     serializer_class = ClientAddressSerializer
 
     def get_permissions(self):
-        if self.action in ['update', 'partial_update', 'destroy']:
+        if self.action in [
+            'update', 'partial_update', 'destroy'
+            ]:
             return [IsOwnerOrAdmin()]
         return [permissions.IsAuthenticated()]
 
