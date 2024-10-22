@@ -10,6 +10,8 @@ from .utils import send_email
 
 
 def send_account_activation_email(user):
+    pass
+"""
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
 
@@ -17,12 +19,13 @@ def send_account_activation_email(user):
 
     subject = 'Activate your account'
     html_content = f"""
+"""
     <p>Hi {user.username},</p>
     <p>Please click the link below to activate your account:</p>
     <a href="{activation_link}">Activate Account</a>
     <p>This link will expire in 24 hours.</p>
     """
-
+"""
     send_email(user.email, subject, html_content)
 
 
@@ -39,3 +42,4 @@ def send_password_reset_email(user, request):
     })
 
     send_email(user.email, subject, html_content)
+"""

@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+
 load_dotenv()
 
 
@@ -51,9 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'geopy',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
     'requests',
     'django_extensions',
     'django_password_validators',
@@ -67,7 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    #'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -178,8 +179,11 @@ REST_FRAMEWORK = {
 
 # JWT Magic tricks!
 JWT_SIGNING_KEY_PATH = os.getenv('JWT_SIGNING_KEY_PATH')
-with open(JWT_SIGNING_KEY_PATH, 'r') as f:
+print("JWT_SIGNING_KEY_PATH from env:", JWT_SIGNING_KEY_PATH)
+print("File exists:", os.path.exists(JWT_SIGNING_KEY_PATH))
+with open(JWT_SIGNING_KEY_PATH, 'r' ) as f:
     JWT_SIGNING_KEY = f.read()
+    print(f)
 
 JWT_PUBLIC_KEY_PATH = os.getenv('JWT_PUBLIC_KEY_PATH')
 with open(JWT_PUBLIC_KEY_PATH, 'r') as f:
@@ -229,7 +233,7 @@ DEFAULT_FROM_EMAIL=os.getenv('DEFAULT_FROM_EMAIL')
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    #'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 BACKEND_URL = 'http://127.0.0.1:8000'

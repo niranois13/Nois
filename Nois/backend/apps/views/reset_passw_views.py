@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 def password_reset_confirm(request, uidb64, token):
+    pass
+"""
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
@@ -21,3 +23,4 @@ def password_reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_confirm.html', {'validlink': True})
     else:
         return render(request, 'password_reset_confirm.html', {'validlink': False})
+"""

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.core.validators import validate_email
-from phonenumber_field.serializerfields import PhoneNumberField
 from django.core.exceptions import ValidationError
 from ..models import User
 

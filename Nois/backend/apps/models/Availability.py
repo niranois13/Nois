@@ -12,6 +12,9 @@ class Availability(BaseModel):
         )
     availability_start_datetime = models.DateTimeField()
     availability_end_datetime = models.DateTimeField()
+    availability_title = models.CharField(
+        max_length=25
+    )
     minimum_duration = models.DurationField(default=timedelta(hours=1))
     maximum_duration = models.DurationField(null=True, blank=True)
 

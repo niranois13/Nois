@@ -55,7 +55,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         editable=False
         )
     slug = models.SlugField(
-
         unique=True,
         blank=True,
     )
@@ -95,7 +94,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default='NONE'
         )
     is_active = models.BooleanField(
-        default=False
+        default=True #False when mail verification implemented
         )
     is_staff = models.BooleanField(
         default=False

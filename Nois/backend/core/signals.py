@@ -7,5 +7,8 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def send_confirmation_email(sender, instance, created, **kwargs):
+    pass
+"""
     if created:
         send_account_activation_email(instance)
+"""

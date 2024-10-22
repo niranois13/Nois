@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
-from ..models import Appointment, Client, Professional, AppointmentLink
+from ..models import Appointment, Professional, AppointmentLink
 from ..serializers import ClientSerializer, ProfessionalSerializer
 
 class AppointmentSerializer(serializers.ModelSerializer):
@@ -14,6 +14,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'professional_slug',
             'start',
             'end',
+            'title,'
             'description',
             'appntmnt_status',
             'appntmnt_location',
@@ -22,7 +23,11 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'professional_address',
             'slug'
         ]
-        read_only_fields = ['slug', 'client_slug', 'professional_slug']
+        read_only_fields = [
+            'slug',
+            'client_slug',
+            'professional_slug'
+            ]
 
     def get_client_slug(self, obj):
         client_serializer = ClientSerializer(obj.client)

@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from ..models import Appointment
 from ..serializers import AppointmentSerializer
-from ..permissions import IsClient, IsProfessional, IsAdmin, IsAppointmentParticipantOrAdmin
+from ..permissions import IsClient, IsAdmin, IsAppointmentParticipantOrAdmin
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
@@ -19,22 +19,6 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
-
-    def list(self, request, *args, **kwargs):
-        if request.user.role == 'ADMIN':
-            return super().list(request, *args, **kwargs)
-        return Response(
-            {"detail": "You do not have permission to perform this action."},
-            status=status.HTTP_403_FORBIDDEN
-            )
-
-    def create(self, request, *args, **kwargs):
-        if request.user.role in ['CLIENT', 'ADMIN']:
-            return super().create(request, *args, **kwargs)
-        return Response({
-            "detail": "You do not have permission to perform this action."},
-            status=status.HTTP_403_FORBIDDEN
-            )
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()

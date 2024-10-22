@@ -1,1 +1,1 @@
-from .serializers import UserSerializer, AddressSerializer, ClientSerializer, ProfessionalSerializer
+from .serializers import UserSerializer, AddressSerializer, ClientSerializer, ProfessionalSerializer, AvailabilitySerializer, AppointmentSerializer
