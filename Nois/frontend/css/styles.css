@@ -26,7 +26,12 @@
   --color-textblock: #3F546E;
 }
 
+.visually-hidden {
+  display: none;
+}
+
 body {
+  padding-top: 5vh;
   margin: 0;
   padding: 0;
   display: flex;
@@ -41,6 +46,12 @@ body {
   font-family: var(--font-secondary);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   height: auto;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
 }
 
 .navbar a {
@@ -94,13 +105,25 @@ body {
   position: relative;
 }
 
-.close {
+.modal span {
   position: absolute;
   top: 10px;
   right: 15px;
   font-size: 24px;
   color: #333;
   cursor: pointer;
+}
+
+.modal-content label {
+  display: block;
+  margin: 0.625rem 0 0.313rem 0;;
+  font-family:  var(--font-body);
+  font-size: var(--font-size-body);
+  color: var(--color-dark);
+}
+.div-checkbox {
+  display: flex;
+  flex-direction: row;
 }
 
 .modal h2 {
@@ -116,14 +139,14 @@ input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
+  margin: 5px 0 5px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
 }
 
 input[type="checkbox"] {
-  margin-right: 10px;
+  margin: 0.625rem 0.625rem 0.313rem 0;;
   transform: scale(1.2);
 }
 
@@ -145,8 +168,9 @@ input[type="checkbox"] {
 
 /* Header */
 header {
+  height: 40vh;
+  margin-top: 5vh;
   background-color: var(--color-dark);
-  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,31 +191,35 @@ header {
   font-family: var(--font-secondary);
   font-size: var(--font-size-heading-medium);
   font-weight: var(--font-weight-semibold);
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 
-.button-container {
-  margin: 1.25rem 0;
+.header .button-container {
   display: flex;
   justify-content: center;
+  gap: 1.875rem;
+  width: 100%;
+  max-width: 28.125rem;
 }
 
-.header button {
+.header .button-container button {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  flex-basis: 25rem;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
   background-color: var(--color-light);
-  color: black;
-  border: none;
-  padding: 0.625rem 1.25rem;
-  margin: 0 0.625rem;
-  cursor: pointer;
-  border-radius: 0.3125rem;
+  border: 1px solid #ccc;
+  border-radius: 0.315rem;
 }
 
-.header button:hover {
+.header .button-container button:hover {
   background-color: var(--color-light-hover);
 }
 
 /* Search Bar*/
-.search-bar {
+.header .search-bar {
   margin-top: 1rem;
   display: flex;
   justify-content: center;
@@ -201,33 +229,38 @@ header {
   color: black;
 }
 
-.search-bar input {
+.header .search-bar input {
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 0.315rem 0 0 0.315rem;
-  margin: 0 -1rem;
-  margin-right: 0;
+  margin: 0;
   background-color: var(--color-light);
 }
 
-.search-bar button {
+.header .search-bar button {
   padding: 0.8rem;
-  margin-left: none;
-  margin: 0 -1rem;
+  margin: 0;
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 0 0.315rem 0.315rem 0;
   background-color: var(--color-light);
 }
 
-.search-bar button:hover {
+.header .search-bar button:hover {
   background-color: var(--color-light-hover);
 }
 
 /* Main */
-.main-content {
-  flex: 1;
+
+main {
   height: auto;
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+}
+.main-content {
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
@@ -276,11 +309,10 @@ header {
 
 /* Footer */
 footer {
-  height: 5vh;
-  position: fixed;
   bottom: 0;
+  position: absolute;
   text-align: center;
-  font-size: calc(var(--font-size-small) * 0.8);
+  font-size: var(--font-size-small);
   font-family: var(--font-secondary);
   background-color: var(--color-light);
   color: var(--color-dark);

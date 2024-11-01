@@ -1,9 +1,9 @@
-document.getElementById("register-patient").addEventListener("click", function(event){
+document.getElementById("register-user").addEventListener("click", function(event){
   event.preventDefault();
   document.getElementById("UserRegisterModal").style.display = "flex";
 });
 
-document.querySelector(".close").addEventListener("click", function() {
+document.querySelector(".register-close").addEventListener("click", function() {
   document.getElementById("UserRegisterModal").style.display = "none";
 });
 
@@ -17,8 +17,8 @@ window.onclick = function(event) {
 document.getElementById("register-button").addEventListener("click", function() {
   const first_name = document.getElementById("user_first_name").value;
   const last_name = document.getElementById("user_last_name").value;
-  const phone_number = document.getElementById("user_phone_number").value;
-  const is_helper = document.getElementById("user_is_helper").value;
+  const user_phone_number = document.getElementById("user_phone_number").value;
+  const is_helper = document.getElementById("user_is_helper").checked;
   const email = document.getElementById("user_email").value;
   const password = document.getElementById("user_password").value;
   const address = document.getElementById("user_address").value;
@@ -27,24 +27,28 @@ document.getElementById("register-button").addEventListener("click", function() 
     alert("Veuillez fournir un nom, un prénom, un email et un mot de passe.");
     return;
   }
-  if (!phone_number.value) {
-    phone_number.value = "null";
-  }
-  if (!address.value) {
-    address.value = "null";
-  }
+
+  let phone_number;
+
+  if (user_phone_number.startsWith("0")) {
+    phone_number = "+33" + user_phone_number.slice(1);
+  } else {
+    phone_number = user_phone_number;
+  };
 
   const userData = {
     first_name: first_name,
     last_name: last_name,
-    phone_number: phone_number,
+    phone_number: phone_number || null,
     is_helper: is_helper,
     email: email,
     password: password,
-    address: address,
+    address: address || null,
   };
 
-  fetch("/register/clients/", {
+  console.log("User Data:", userData);
+
+  fetch("/api/register/clients/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -56,7 +60,7 @@ document.getElementById("register-button").addEventListener("click", function() 
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    return response.json()
+    return response.json();
   })
   .then(data => {
     console.log("Success:", data);
