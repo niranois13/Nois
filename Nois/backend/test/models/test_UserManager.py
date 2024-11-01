@@ -45,7 +45,7 @@ class TestUserManager:
             User.objects.create_user(email='test@example.com', password='S3condsTrongp_ssword123')
 
     def test_user_str_method(self):
-        user = User.objects.create_user(email='test@example.com', password='validPassword123')
+        user = User.objects.create_user(email='test@example.com', password='validP_ssword123')
         assert str(user) == 'test@example.com'
 
     def test_create_superuser(self):

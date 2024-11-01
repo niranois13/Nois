@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -58,17 +58,28 @@ INSTALLED_APPS = [
     'requests',
     'django_extensions',
     'django_password_validators',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'allauth.account.middleware.AccountMiddleware',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://localhost:80",
+    "http://127.0.0.1:8000",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -179,11 +190,8 @@ REST_FRAMEWORK = {
 
 # JWT Magic tricks!
 JWT_SIGNING_KEY_PATH = os.getenv('JWT_SIGNING_KEY_PATH')
-print("JWT_SIGNING_KEY_PATH from env:", JWT_SIGNING_KEY_PATH)
-print("File exists:", os.path.exists(JWT_SIGNING_KEY_PATH))
 with open(JWT_SIGNING_KEY_PATH, 'r' ) as f:
     JWT_SIGNING_KEY = f.read()
-    print(f)
 
 JWT_PUBLIC_KEY_PATH = os.getenv('JWT_PUBLIC_KEY_PATH')
 with open(JWT_PUBLIC_KEY_PATH, 'r') as f:
@@ -193,7 +201,7 @@ REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'access_token'
 JWT_AUTH_REFRESH_COOKIE = 'refresh_token'
 JWT_COOKIE_LIFETIME = timedelta(minutes=60)
-SECURE_COOKIE = False #True in production!!
+SECURE_COOKIE = True #True in production!!
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = False #True in production!!
 

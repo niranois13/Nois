@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15
+    image: postgis/postgis:15-3.3
     env_file:
       - .env
     volumes:
@@ -8,7 +8,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - back-end
+      - backend
 
   web:
     build: ./backend
@@ -16,9 +16,11 @@ services:
       - .env
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend:/code
-    ports:
-      - "8000:8000"
+    - ./backend:/code
+    - ./backend/jwt_private.pem:/code/jwt_private.pem
+    - ./backend/jwt_public.pem:/code/jwt_public.pem
+    expose:
+      - "8000"  # Expose le port pour Nginx, mais n'expose pas à l'extérieur
     depends_on:
       - db
     networks:
@@ -26,16 +28,27 @@ services:
 
   frontend:
     build: ./frontend
-    ports:
-      - "3000:3000"
+    expose:
+      - "5000"
     depends_on:
       - web
     networks:
+      - backend
+  nginx:
+    build: ./frontend
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
       - frontend
+    networks:
+      - backend
 
 networks:
   backend:
-  frontend:
 
 volumes:
   pgdata:
