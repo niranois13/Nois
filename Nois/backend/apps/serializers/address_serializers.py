@@ -57,9 +57,7 @@ class AddressSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        print("Creating instance of:", self.Meta.model)
         address = self.Meta.model(**validated_data)
-        print("Address instance created:", address)
         address.save()
         return address
 

@@ -1,3 +1,4 @@
+// User registration
 document.getElementById("register-user").addEventListener("click", function(event){
   event.preventDefault();
   document.getElementById("UserRegisterModal").style.display = "flex";

@@ -46,7 +46,7 @@ document.getElementById("login-button").addEventListener("click", function() {
   })
   .then(data => {
       console.log("Success:", data);
-      window.location.href = "/html/";
+      window.location.href = "/";
   })
   .catch((error) => {
       console.error("Error:", error);

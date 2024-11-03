@@ -43,6 +43,8 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def validate_phone_number(self, value):
+        if value == "":
+            return None
         if self.instance:
             if User.objects.filter(phone_number=value).exclude(id=self.instance.id).exists():
                 raise serializers.ValidationError("Ce numéro de téléphone est déjà utilisé.")

@@ -82,6 +82,7 @@ body {
   color: black;
 }
 
+/* Modales */
 .modal {
   display: none;
   position: fixed;
@@ -105,7 +106,14 @@ body {
   position: relative;
 }
 
-.modal span {
+.modal .modal-content h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: var(--font-primary);
+  color: var(--color-dark);
+}
+
+.modal .modal-content span {
   position: absolute;
   top: 10px;
   right: 15px;
@@ -116,37 +124,30 @@ body {
 
 .modal-content label {
   display: block;
-  margin: 0.625rem 0 0.313rem 0;;
+  margin: 1rem 0 0 0;
   font-family:  var(--font-body);
   font-size: var(--font-size-body);
   color: var(--color-dark);
 }
-.div-checkbox {
-  display: flex;
-  flex-direction: row;
-}
 
-.modal h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-family: var(--font-primary);
-  color: var(--color-dark);
-}
-
-input[type="email"],
-input[type="tel"],
-input[type="text"],
-input[type="password"] {
+.modal-content input[type="email"],
+.modal-content input[type="tel"],
+.modal-content input[type="text"],
+.modal-content input[type="password"] {
   width: 100%;
   padding: 10px;
-  margin: 5px 0 5px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
 }
 
-input[type="checkbox"] {
-  margin: 0.625rem 0.625rem 0.313rem 0;;
+.modal .modal-content .modal-content-checkbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.modal-content input[type="checkbox"] {
+  margin: 1rem 0 0 1rem;
   transform: scale(1.2);
 }
 
@@ -160,6 +161,7 @@ input[type="checkbox"] {
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  margin: 1rem 0 0 0;
 }
 
 .modal-button:hover {
@@ -167,18 +169,21 @@ input[type="checkbox"] {
 }
 
 /* Header */
-header {
-  height: 40vh;
+.header {
   margin-top: 5vh;
   background-color: var(--color-dark);
+  overflow: hidden;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
-  padding: 1rem;
 }
 
-.header h1 {
+.header-home {
+  height: 42vh;
+}
+
+.header-home h1 {
   color: var(--color-light);
   font-family: var(--font-primary);
   font-size: calc(var(--font-size-heading-large) * 2);
@@ -186,12 +191,57 @@ header {
   margin: 0;
 }
 
-.header p {
+.header h2 {
   color: var(--color-light);
   font-family: var(--font-secondary);
   font-size: var(--font-size-heading-medium);
   font-weight: var(--font-weight-semibold);
   margin: 0.5rem 0 1rem 0;
+}
+
+.header:not(.header-home) {
+  height: 15vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.header:not(.header-home) .header-title {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: flex-start;
+  padding: 0.8rem;
+}
+
+.header:not(.header-home) .header-title h1 {
+  color: var(--color-light);
+  font-family: var(--font-primary);
+  font-size: calc(var(--font-size-heading-large));
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.header:not(.header-home) .header-title h2 {
+  color: var(--color-light);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+
+.header:not(.header-home) .header-logo img {
+  height: auto;
+  max-width: 4.688rem;
+}
+
+.header:not(.header-home) .page-title h3 {
+  color: var(--color-light-hover);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-heading-large);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+
 }
 
 .header .button-container {
@@ -202,19 +252,25 @@ header {
   max-width: 28.125rem;
 }
 
-.header .button-container button {
+.header .button-container button,
+.header .button-container a {
   flex: 1;
   padding: 0.5rem 1rem;
   flex-basis: 25rem;
   white-space: nowrap;
-  min-width: 0;
   overflow: hidden;
   background-color: var(--color-light);
   border: 1px solid #ccc;
   border-radius: 0.315rem;
+  font-family: var(--font-secondary);
+  font-size: calc(var(--font-size-body) * 0.9);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  color: var(--color-textblock)
 }
 
-.header .button-container button:hover {
+.header .button-container button:hover,
+.header .button-container a:hover {
   background-color: var(--color-light-hover);
 }
 
@@ -229,7 +285,9 @@ header {
   color: black;
 }
 
-.header .search-bar input {
+.header .search-bar .search-bar_input {
+  flex: 1;
+  height: 90%;
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 0.315rem 0 0 0.315rem;
@@ -238,12 +296,16 @@ header {
 }
 
 .header .search-bar button {
+  height: 90%;
   padding: 0.8rem;
   margin: 0;
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 0 0.315rem 0.315rem 0;
   background-color: var(--color-light);
+  font-family: var(--font-secondary);
+  color: var(--color-textblock);
+  font-size: var(--font-size-small);
 }
 
 .header .search-bar button:hover {
@@ -251,28 +313,67 @@ header {
 }
 
 /* Main */
-
 main {
   height: auto;
-  flex: 0 1 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
 }
-.main-content {
-  padding: 1rem 2rem;
+
+.home-main-content {
+  padding: 1rem;
   display: flex;
   align-items: center;
   background-color: var(--color-light);
   overflow: hidden;
 }
 
-.textbox {
+.home-textbox {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: justify;
+}
+
+.home-textbox-title {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-heading-large);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-dark);
+  margin: 0 0 0.6rem 5rem;
+}
+
+.home-textbox-subtitle {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-heading-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-dark-hover);
+  margin: 0 0 0.9rem 5rem;
+}
+
+.home-textbox-content {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-textblock);
+  margin: 0 0 0 3rem;
+}
+
+.home-textbox-image {
+  width: 100%;
+  height: auto;
+  max-width: 18.75rem;
+  margin-left: 2rem;
+  margin-right: 3rem;
+}
+
+.main-content {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-light);
+  overflow: hidden;
 }
 
 .textbox-title {
@@ -280,7 +381,7 @@ main {
   font-size: var(--font-size-heading-large);
   font-weight: var(--font-weight-bold);
   color: var(--color-dark);
-  margin: 0 0 0.8rem 10rem;
+  margin: 0 0 0.6rem 5rem;
 }
 
 .textbox-subtitle {
@@ -288,7 +389,7 @@ main {
   font-size: var(--font-size-heading-small);
   font-weight: var(--font-weight-semibold);
   color: var(--color-dark-hover);
-  margin: 0 0 0.9rem 10rem;
+  margin: 0 0 0.9rem 5rem;
 }
 
 .textbox-content {
@@ -296,21 +397,11 @@ main {
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-regular);
   color: var(--color-textblock);
-  margin: 0 0 0 5rem;
-}
-
-.textbox-image {
-  width: 100%;
-  height: auto;
-  max-width: 300px;
-  margin-left: 2rem;
-  margin-right: 5rem;
+  margin: 0 3rem 0 3rem;
 }
 
 /* Footer */
 footer {
-  bottom: 0;
-  position: absolute;
   text-align: center;
   font-size: var(--font-size-small);
   font-family: var(--font-secondary);

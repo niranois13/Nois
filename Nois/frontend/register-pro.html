@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noïs</title>
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- NavBar with modal login -->
+    <nav class="navbar" role="navigation">
+        <a href="/" class="navbar-current-page" aria-current="page">Accueil</a>
+        <a href="#" class="login-link">Me connecter</a>
+        <a href="#" class="navbar-button">Services</a>
+        <a href="#" class="navbar-button">Link 3</a>
+        <a href="#" class="navbar-button">Link 4</a>
+    </nav>
+    <div id="loginModal" class="modal" aria-labelledby="loginTitle" aria-modal="true">
+        <div class="modal-content">
+            <span class="close" aria-label="Fermer">&times;</span>
+            <h2 id="loginTitle">Connexion</h2>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Email" required>
+
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+
+            <button id="login-button" class="modal-button">Se connecter</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-title">
+            <h1>Noïs</h1>
+            <h2>Faciliter la vie, ensemble.</h2>
+        </div>
+        <div class="header-logo">
+            <img src="/resources/handshake-logo-white.png"
+                alt="Coeur composé de deux mains se serrant, symbolisant l'entraide et le soutien.">
+        </div>
+        <div class="page-title">
+            <h3>Compte Pro</h3>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-content">
+            <div class="textbox">
+                <h5 class="textbox-title">Lorem Ipsum</h5>
+                <h6 class="textbox-subtitle">Lorem ipsum dolor sit amet</h6>
+                <p class="textbox-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                    consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                    veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+        </div>
+
+        <div class="main-form">
+            <div class="main-form-content">
+                <h2 id="registerTitle">Créer mon compte</h2>
+
+                <form id="ProRegisterForm" aria-labelledby="registerTitle">
+
+                    <div class="main-form-name">
+                        <label for="pro_first_name">Prénom</label>
+                        <input type="text" id="pro_first_name" name="first_name" placeholder="Prénom" required>
+
+                        <label for="pro_last_name">Nom</label>
+                        <input type="text" id="pro_last_name" name="last_name" placeholder="Nom" required>
+                    </div>
+
+                    <div class="main-form-phone-profession">
+                        <label for="pro_profession">Profession</label>
+                        <input type="text" id="pro_profession" name="profession" placeholder="Profession">
+
+                        <label for="pro_phone_number">Numéro de téléphone</label>
+                        <input type="tel" id="pro_phone_number" name="phone_number" placeholder="+33123456789">
+                    </div>
+                    <div class="main-form-mobility">
+                        <div class="main-form-checkbox">
+                            <label for="pro_is_mobile">Je peux me déplacer</label>
+                            <input type="checkbox" id="pro_is_mobile" name="is_mobile" value="true">
+                        </div>
+
+                        <label for="pro_intervention_radius">Dans quel rayon ?(km)</label>
+                        <input type="number" id="pro_intervention_radius" name="intervention_radius" min="0"
+                            value="0" placeholder="0" required>
+                    </div>
+
+                    <div class="main-form-address">
+                        <label for="pro_address">Adresse complète (rue, code postal, ville)</label>
+                        <input type="text" id="pro_address" name="address"
+                            placeholder="Ex: 123 Rue de la Liberté, 75001 Paris">
+                    </div>
+
+                    <div class="main-form-credentials">
+                        <label for="pro_email">Email</label>
+                        <input type="email" id="pro_email" name="email" placeholder="Email" required>
+
+                        <label for="pro_password">Mot de passe</label>
+                        <input type="password" id="pro_password" name="password" minlength="14"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{14,}"
+                            title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
+                            required>
+                    </div>
+
+                    <button type="submit" id="pro_register-button" class="main-form-button">Créer mon compte</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2024 Noïs. Tous droits réservés.</p>
+    </footer>
+
+    <script src="/js/login.js"></script>
+    <script src="/js/register-pro.js"></script>
+</body>
+
+</html>
