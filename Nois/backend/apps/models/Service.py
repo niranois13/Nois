@@ -13,13 +13,9 @@ class Service(BaseModel):
     ("VIE_QUOTIDIENNE", "Assistance à la vie quotidienne"),
     ("AUTRE", "Autre"),
     )
+
     service_name = models.CharField(
         max_length=40,
-        blank=False,
-        null=False
-        )
-
-    service_description = models.TextField(
         blank=False,
         null=False
         )
@@ -36,6 +32,10 @@ class Service(BaseModel):
         max_length=60,
         blank=True,
         null=True
+        )
+
+    custom_sevice_is_verified = models.BooleanField(
+        default=False
         )
 
     professionals = models.ManyToManyField(
@@ -58,3 +58,18 @@ class Service(BaseModel):
     class Meta:
         verbose_name = 'Service'
         verbose_name_plural = 'Services'
+
+
+class ProfessionalService(BaseModel):
+    professional = models.ForeignKey('Professional', on_delete=models.CASCADE, related_name='professional_services')
+    service = models.ForeignKey('Service', on_delete=models.CASCADE, related_name='professional_services')
+    custom_description = models.TextField(blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('professional', 'service')
+        verbose_name = 'Professional service description'
+        verbose_name_plural= 'Professional services description'
+
+    def __str__(self):
+        return f"{self.professional} - {self.service.service_name}"

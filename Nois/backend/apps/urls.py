@@ -3,7 +3,8 @@ from .views import (
     ClientViewSet, ClientAddressViewSet,
     ProfessionalViewSet, ProfessionalAddressViewSet,
     AppointmentViewSet, ClientAppointmentViewSet, ProfessionalAppointmentViewSet,
-    AvailabilityViewSet, ProfessionViewSet, QualificationViewSet, ServiceViewSet
+    AvailabilityViewSet, ProfessionViewSet, QualificationViewSet,
+    ServiceViewSet, ProfessionalServiceViewSet,
 )
 
 urlpatterns = [
@@ -36,8 +37,10 @@ urlpatterns = [
     path('api/qualifications/', QualificationViewSet.as_view({'get': 'list'}), name="qualifications-list"),
     path('api/professionals/<slug:slug>/qualifications/', QualificationViewSet.as_view({'get': 'list', 'post': 'create'}), name='professional-qualifications-list'),
     path('api/professionals/<slug:slug>/qualifications/<slug:qualification_slug>', QualificationViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-qualification-detail'),
-    #Services specific routes
-    path('api/services/', ServiceViewSet.as_view({'get': 'list'}), name="service-list"),
-    path('api/professionals/<slug:slug>/services/', ServiceViewSet.as_view({'get': 'list', 'post': 'create'}), name="professional-service-list"),
-    path('api/professionals/<slug:slug>/services/<slug:service_slug>/', ServiceViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-service-detail')
+    #Public services routes
+    path('api/services/', ServiceViewSet.as_view({'get': 'list', 'post': 'create'}), name="service-list"),
+    path('api/services/<slug:slug>/', ServiceViewSet.as_view({'get': 'retrieve'}), name="service-detail"),
+    #Professional services specific routes
+    path('api/professionals/<slug:professional_slug>/services/', ProfessionalServiceViewSet.as_view({'get': 'list', 'post': 'create'}), name="professional-service-list"),
+    path('api/professionals/<slug:professional_slug>/services/<slug:service_slug>/', ProfessionalServiceViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-service-detail'),
 ]

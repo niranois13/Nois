@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from ..models import Service
-from ..serializers import ProfessionalSerializer
+from ..models import Service, ProfessionalService
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -12,15 +11,22 @@ class ServiceSerializer(serializers.ModelSerializer):
             'service_description',
             'service_category',
             'custom_service_category',
+            'custom_service_is_verified',
             'slug'
         ]
         read_only_fields = [
-            'slug'
+            'slug',
+            'custom_service_is_verified'
         ]
 
     def validate(self, data):
         if data.get('service_category') != "AUTRE" and data.get('custom_service_category'):
             raise serializers.ValidationError(
-                "Custom category should only be set when 'AUTRE' is selected."
+                "Une autre catégorie ne peut être ajoutée que si 'AUTRE' est sélectionné."
             )
         return data
+
+class ProfessionalServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfessionalService
+        fields = ['professional', 'service', 'custom_description']

@@ -6,4 +6,4 @@ from .appointment_serializers import AppointmentSerializer
 from .availability_serializers import AvailabilitySerializer
 from .profession_serializers import ProfessionSerializer
 from .qualification_serializers import QualificationSerializer
-from .service_serializers import ServiceSerializer
+from .service_serializers import ServiceSerializer, ProfessionalServiceSerializer

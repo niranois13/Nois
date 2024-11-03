@@ -19,6 +19,7 @@ from django.urls import path, include
 from apps.views.auth_views import CustomTokenObtainPairView
 from apps.views.logout_views import LogoutView
 from apps.views.act_acc_views import activate_account
+from apps.views.search_views import SearchView
 
 admin.autodiscover()
 
@@ -43,6 +44,11 @@ urlpatterns = [
         'api/activate/<uidb64>/<token>/',
         activate_account,
         name='activate'
+        ),
+    path(
+        'api/search/',
+        SearchView.as_view(),
+        name='search'
         ),
     path('', include('apps.urls')),
 ]

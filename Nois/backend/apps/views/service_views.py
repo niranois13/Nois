@@ -1,34 +1,22 @@
-from django.http import Http404
 from rest_framework import viewsets, permissions
-from ..models import Service
-from ..serializers import ServiceSerializer
-from ..permissions import IsAdmin, IsProfessional
-
+from ..permissions import IsProfessional
+from ..models import Service, ProfessionalService
+from ..serializers import ServiceSerializer, ProfessionalServiceSerializer
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.all()
+    queryset = Service.objects.filter(is_verified=True)
     serializer_class = ServiceSerializer
-    lookup_field = 'slug'
+    permission_classes = [permissions.AllowAny]
 
-    def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            permission_classes = [IsProfessional | IsAdmin]
-        else:
-            permission_classes = [permissions.AllowAny]
-        return [permission() for permission in permission_classes]
+    def perform_create(self, serializer):
+        serializer.save(is_verified=False)
 
-    def queryset(self):
-        professional_slug = self.kwargs.get('slug')
-        return Service.objects.filter(professionals__slug=professional_slug)
 
-    def get_object(self):
-        professional_slug = self.kwargs.get('slug')
-        service_slug = self.kwargs.get('service_slug')
-        try:
-            return Service.objects.get(professionals__slug=professional_slug, slug=service_slug)
-        except Service.DoesNotExist:
-            raise Http404("No Service matches the given query.")
+class ProfessionalServiceViewSet(viewsets.ModelViewSet):
+    queryset = ProfessionalService.objects.all()
+    serializer_class = ProfessionalServiceSerializer
+    permission_classes = [IsProfessional]
 
     def perform_create(self, serializer):
         professional = self.request.user.professional
-        serializer.save(professionals=[professional])
+        serializer.save(professional=professional)

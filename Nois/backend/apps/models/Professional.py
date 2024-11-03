@@ -11,8 +11,11 @@ class Professional(User):
     profession = models.ForeignKey(
         Profession,
         on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        )
+    services = models.ManyToManyField(
+        'Service',
+        related_name='professionals',
+        blank=True,
         )
     is_mobile = models.BooleanField(
         blank=False,
@@ -20,10 +23,10 @@ class Professional(User):
         default=True
         )
     intervention_radius = models.PositiveIntegerField(
-            validators=[MinValueValidator(0), MaxValueValidator(200)],
-            default=0,
-            help_text="Rayon d'intervention (km)"
-            )
+        validators=[MinValueValidator(0), MaxValueValidator(200)],
+        default=0,
+        help_text="Rayon d'intervention (km)"
+        )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
