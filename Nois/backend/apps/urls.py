@@ -4,7 +4,7 @@ from .views import (
     ProfessionalViewSet, ProfessionalAddressViewSet,
     AppointmentViewSet, ClientAppointmentViewSet, ProfessionalAppointmentViewSet,
     AvailabilityViewSet, ProfessionViewSet, QualificationViewSet,
-    ServiceViewSet, ProfessionalServiceViewSet,
+    ServiceViewSet, ProfessionalServiceViewSet, SearchView, ProfessionalRegistrationView
 )
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
     path('api/clients/<slug:slug>/address/<slug:address_slug>/', ClientAddressViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='client-address-detail'),
     #Professionals specific routes
     path('api/professionals/', ProfessionalViewSet.as_view({'get': 'list'}), name='professional-list'),
-    path('api/register/professionals/', ProfessionalViewSet.as_view({'post': 'create'}), name='register-professional'),
+    path('api/register/professionals/', ProfessionalRegistrationView.as_view(), name='register-professional'),
     path('api/professionals/<slug:slug>/', ProfessionalViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-detail'),
     path('api/professionals/<slug:slug>/address/', ProfessionalAddressViewSet.as_view({'get': 'retrieve', 'post': 'create'}), name='professional-address-list'),
     path('api/professionals/<slug:slug>/address/<slug:address_slug>/', ProfessionalAddressViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-address-detail'),
@@ -43,4 +43,6 @@ urlpatterns = [
     #Professional services specific routes
     path('api/professionals/<slug:professional_slug>/services/', ProfessionalServiceViewSet.as_view({'get': 'list', 'post': 'create'}), name="professional-service-list"),
     path('api/professionals/<slug:professional_slug>/services/<slug:service_slug>/', ProfessionalServiceViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-service-detail'),
+    #Search routes
+    path('api/search/', SearchView.as_view(), name='search'),
 ]

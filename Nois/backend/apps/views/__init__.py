@@ -12,3 +12,5 @@ from .reset_passw_views import password_reset_confirm
 from .profession_views import ProfessionViewSet
 from .qualification_views import QualificationViewSet
 from .service_views import ServiceViewSet, ProfessionalServiceViewSet
+from .search_views import SearchView
+from .ProfessionalRegistrationView import ProfessionalRegistrationView

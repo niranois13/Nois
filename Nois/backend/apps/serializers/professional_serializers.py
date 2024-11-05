@@ -5,9 +5,14 @@ from django.core.exceptions import ValidationError
 
 
 class ProfessionalSerializer(UserSerializer):
+
     class Meta(UserSerializer.Meta):
         model = Professional
-        fields = UserSerializer.Meta.fields + ['is_mobile', 'intervention_radius', 'profession']
+        fields = UserSerializer.Meta.fields + [
+            'is_mobile',
+            'intervention_radius',
+            'profession',
+            ]
 
     def create(self, validated_data):
         is_mobile = validated_data.pop('is_mobile')

@@ -11,10 +11,11 @@ class Professional(User):
     profession = models.ForeignKey(
         Profession,
         on_delete=models.SET_NULL,
+        null=True,
         )
     services = models.ManyToManyField(
         'Service',
-        related_name='professionals',
+        related_name='professionals_list',
         blank=True,
         )
     is_mobile = models.BooleanField(

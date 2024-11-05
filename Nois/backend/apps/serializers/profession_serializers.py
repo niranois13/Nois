@@ -6,6 +6,7 @@ class ProfessionSerializer(serializers.ModelSerializer):
         model = Profession
         fields = [
             'name',
+            'custom_profession',
             'approved',
             'proposed_by',
             'slug'

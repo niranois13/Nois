@@ -11,10 +11,8 @@ class ProfessionViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action == 'list' or self.action == 'create':
             permission_classes = [permissions.AllowAny]
-        elif self.action == 'create':
-            permission_classes = [IsProfessional | IsAdmin]
         elif self.action in ['update', 'partial_update', 'destroy']:
             permission_classes = [IsOwnerOrAdmin]
         else:

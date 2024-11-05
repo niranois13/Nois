@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Noïs</title>
+
   <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
   <link rel="shortcut icon" href="/favicon/favicon.ico" />
@@ -12,13 +14,17 @@
   <link rel="manifest" href="/favicon/site.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/css/styles.css">
+
 </head>
 
 <body>
+
   <!-- NavBar with modal login -->
   <nav class="navbar" role="navigation">
     <a href="/" class="navbar-current-page" aria-current="page">Accueil</a>
@@ -27,6 +33,7 @@
     <a href="#" class="navbar-button">Link 3</a>
     <a href="#" class="navbar-button">Link 4</a>
   </nav>
+
   <div id="loginModal" class="modal" aria-labelledby="loginTitle" aria-modal="true">
     <div class="modal-content">
       <span class="close" aria-label="Fermer">&times;</span>
@@ -92,22 +99,24 @@
       <input type="text" class="search-bar_input" id="search-input"
         aria-label="Rechercher des professionnels ou des services"
         placeholder="Rechercher des professionels ou des services." />
-      <button type="button" aria-label="Rechercher">Rechercher</button>
+      <button type="submit" id="search-button" class="search-button" aria-placeholder="Rechercher">Rechercher</button>
     </div>
+    <div id="results-container"></div>
+
   </header>
 
   <main role="main">
     <div class="home-main-content">
       <div class="home-textbox">
         <h3 class="home-textbox-title">Lorem Ipsum</h3>
-          <h4 class="home-textbox-subtitle">Lorem ipsum dolor sit amet</h5>
-            <p class="home-textbox-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-              laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
-              occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur
-              adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-              veniam, quis nostrud exercitation ullamco
-              laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <h4 class="home-textbox-subtitle">Lorem ipsum dolor sit amet</h5>
+          <p class="home-textbox-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur
+            adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo consequat.</p>
       </div>
       <img class="home-textbox-image" src="/resources/handshake.png"
         alt="Coeur composé de deux mains se serrant, symbolisant l'entraide et le soutien." class="textbox-image">
@@ -120,6 +129,7 @@
 
   <script src="/js/login.js"></script>
   <script src="/js/register.js"></script>
+  <script src="/js/search.js"></script>
 </body>
 
 </html>

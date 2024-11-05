@@ -168,6 +168,12 @@ body {
   background-color: var(--color-dark-hover);
 }
 
+.modal-custom-profession-container,
+.modal-custom-category-container,
+.modal-custom-service-container {
+  display: none;
+}
+
 /* Header */
 .header {
   margin-top: 5vh;

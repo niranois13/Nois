@@ -38,10 +38,14 @@ class ProfessionalAddressViewSet(viewsets.ModelViewSet):
     serializer_class = ProfessionalAddressSerializer
 
     def get_permissions(self):
-        if self.action in [
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        elif self.action in [
             'update', 'partial_update', 'destroy'
             ]:
             return [IsOwnerOrAdmin()]
+        elif self.Action == 'list':
+            return permissions.IsAdminUser()
         return [permissions.IsAuthenticated()]
 
     def get_queryset(self):
