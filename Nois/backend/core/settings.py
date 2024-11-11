@@ -34,8 +34,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,22 +41,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'django.contrib.sites',
+    'django.contrib.postgres',
+    'django_extensions',
+    'django_password_validators',
     'apps',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
     'phonenumber_field',
-    'django.contrib.gis',
     'geopy',
-    'django.contrib.sites',
+    'requests',
+    'corsheaders',
+    'unidecode',
+    "debug_toolbar", #NOT IN PROD!
+    # allauth sera utilisé pour les mails.
     #'allauth',
     #'allauth.account',
     #'allauth.socialaccount',
-    'requests',
-    'django_extensions',
-    'django_password_validators',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -66,19 +68,20 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware', # A REACTIVER EN PROD !
+    "debug_toolbar.middleware.DebugToolbarMiddleware", #NOT IN PROD!
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'allauth.account.middleware.AccountMiddleware',
+    #'allauth.account.middleware.AccountMiddleware', #Pour la gestion des mails
 ]
 
+# Revoir les paramètres CORS en PROD!
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 CORS_ALLOWED_ORIGINS = [
     "http://localhost",
-    "http://localhost:80",
     "http://127.0.0.1:8000",
 ]
 
@@ -231,7 +234,7 @@ EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL=os.getenv('DEFAULT_FROM_EMAIL')
 
-# Django-Allauth settings
+# Django-Allauth settings pour la gestion des emails
 #ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 #ACCOUNT_EMAIL_REQUIRED = True
 #ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -239,9 +242,24 @@ DEFAULT_FROM_EMAIL=os.getenv('DEFAULT_FROM_EMAIL')
 #    'confirm_email': 86400,
 #}
 
+
+# Pour DEBUG TOOL BAR, à enlever en prod
+NTERNAL_IPS = [
+    "127.0.0.1",
+    "127.17.0.1",
+]
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     #'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 BACKEND_URL = 'http://127.0.0.1:8000'

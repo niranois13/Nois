@@ -25,24 +25,31 @@
 <body>
   <!-- NavBar with modal login -->
   <nav class="navbar" role="navigation">
-    <a href="/" class="navbar-current-page" aria-current="page">Accueil</a>
-    <a href="#" class="login-link">Me connecter</a>
+    <a href="/" id="home_button" class="navbar-current-page" aria-current="page">Accueil</a>
     <a href="#" class="navbar-button">Services</a>
     <a href="#" class="navbar-button">Link 3</a>
     <a href="#" class="navbar-button">Link 4</a>
+    <a href="#" id="login_button" class="login-link">Me connecter</a>
+    <a href="#" id="logout_button" class="login-link" style="display: none;">Me déconnecter</a>
   </nav>
 
   <div id="loginModal" class="modal" aria-labelledby="loginTitle" aria-modal="true">
     <div class="modal-content">
-      <span class="close" aria-label="Fermer">&times;</span>
+      <span class="close" aria-label="Fermer">Fermer &times;</span>
       <h2 id="loginTitle">Connexion</h2>
-
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Email" required>
-
-      <label for="password">Mot de passe</label>
-      <input type="password" id="password" placeholder="Mot de passe" required>
-
+      <div class=modal-content-email-container>
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Email" required>
+      </div>
+      <div class="modal_login_passw">
+        <label for="password">Mot de passe</label>
+        <div class="passw_field_eye">
+          <input type="password" id="password" placeholder="Mot de passe" required>
+          <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Afficher le mot de passe">
+            <i class="icon-eye-open"></i>
+          </button>
+        </div>
+      </div>
       <button id="login-button" class="modal-button">Se connecter</button>
     </div>
   </div>
@@ -58,10 +65,12 @@
         alt="Coeur composé de deux mains se serrant, symbolisant l'entraide et le soutien.">
     </div>
     <div class="page-title">
-      <h3>Compte Pro</h3>
+      <div class="page-title-h3">
+        <h3>Compte Pro</h3>
+      </div>
     </div>
   </header>
-
+  <!-- Un monstre n'a pas especté la règle, après, il est tombé sur un pompier. Il lui a blessé la lèvre. -->
   <main>
     <div class="main-content">
       <div class="textbox">
@@ -79,92 +88,95 @@
           laboris nisi ut aliquip ex ea commodo consequat.</p>
       </div>
     </div>
+    <div class="main-form-super-container">
+      <div class="main-form">
+        <div class="main-form-content">
+          <h2 id="registerTitle">Créer mon compte pro</h2>
 
-    <div class="main-form">
-      <div class="main-form-content">
-        <h2 id="registerTitle">Créer mon compte</h2>
+          <form id="ProRegisterForm" aria-labelledby="registerTitle">
 
-        <form id="ProRegisterForm" aria-labelledby="registerTitle">
-
-          <div class="main-form-name">
-            <label for="pro_first_name">Prénom</label>
-            <input type="text" id="pro_first_name" name="first_name" placeholder="Prénom" required>
-
-            <label for="pro_last_name">Nom</label>
-            <input type="text" id="pro_last_name" name="last_name" placeholder="Nom" required>
-          </div>
-
-          <div class="main-form-phone-profession">
-            <label for="pro_profession">Profession</label>
-            <select id="pro_profession" name="name">
-              <option value="">Sélectionnez une profession</option>
-            </select>
-            <div id="custom-profession-container" class="modal-custom-profession-container">
-              <label for="custom_profession_input">Profession personnalisée</label>
-              <input type="text" id="custom_profession_input" name="custom_profession">
+            <div class="main-form-container">
+              <div class="main-form-fields">
+                <label for="pro_last_name">Nom</label>
+                <input type="text" id="pro_last_name" name="last_name" placeholder="Nom" required>
+              </div>
+              <div class="main-form-fields">
+                <label for="pro_first_name">Prénom</label>
+                <input type="text" id="pro_first_name" name="first_name" placeholder="Prénom" required>
+              </div>
             </div>
 
-            <label for="pro_phone_number">Numéro de téléphone</label>
-            <input type="tel" id="pro_phone_number" name="phone_number" placeholder="+33123456789">
-          </div>
-
-          <!-- May or may not be used here
-          <div class="main-form-services">
-            <label for="pro_service_category">Catégorie de service</label>
-            <select id="pro_service_category" name="service_category">
-              <option value="">Sélectionnez une catégorie</option>
-            </select>
-            <div id="custom-category-container" class="modal-custom-category-container">
-              <label for="custom_service_category_input">Catégorie personnalisée</label>
-              <input type="text" id="custom_service_category_input" name="custom_service_category">
+            <div class="main-form-container">
+              <div class="main-form-fields-pro">
+                <label for="pro_profession">Profession</label>
+                <select id="pro_profession" name="profession">
+                  <option value="">Sélectionnez une profession</option>
+                </select>
+              </div>
+              <div id="custom-profession-container" class="main-form-fields-modal">
+                <label for="custom_profession_input">Autre profession</label>
+                <input type="text" id="custom_profession_input" name="custom_profession" placeholder="Veuillez renseigner votre profession">
+              </div>
             </div>
 
-            <label for="pro_service">Service</label>
-            <select id="pro_service" name="service_name">
-              <option value="">Sélectionnez un service</option>
-            </select>
-            <div id="custom-service-container" class="modal-custom-service-container">
-              <label for="custom_service_name_input">Service personnalisé</label>
-              <input type="text" id="custom_service_name_input" name="custom_service_name">
-            </div>
-            <div class="pro_add_button_container">
-              <button type="submit" id="pro_add_service_button" class="pro_add_button">Ajouter un service</button>
-            </div>
-          </div> -->
-
-          <div class="main-form-mobility">
-            <div class="main-form-checkbox">
-              <label for="pro_is_mobile">Je peux me déplacer</label>
-              <input type="checkbox" id="pro_is_mobile" name="is_mobile" value="true">
+            <div class="main-form-container">
+              <div class="main-form-fields-mobility">
+                <label for="pro_is_mobile">Je peux me déplacer</label>
+                <input type="checkbox" id="pro_is_mobile" name="is_mobile" value="true">
+              </div>
+              <div class="main-form-fields">
+                <label for="pro_intervention_radius">Dans quel rayon ?(km)</label>
+                <input type="number" id="pro_intervention_radius" name="intervention_radius" min="0" value="0"
+                  placeholder="0" required>
+              </div>
             </div>
 
-            <label for="pro_intervention_radius">Dans quel rayon ?(km)</label>
-            <input type="number" id="pro_intervention_radius" name="intervention_radius" min="0" value="0"
-              placeholder="0" required>
+            <div class="main-form-address">
+              <label for="pro_address">Adresse complète (rue, code postal, ville)</label>
+              <input type="text" id="pro_address" name="address" placeholder="Ex: 123 Rue de la Liberté 75001 Paris">
+            </div>
+
+            <div class="main-form-container">
+              <div class="main-form-fields">
+                <label for="pro_email">Email</label>
+                <input type="email" id="pro_email" name="email" placeholder="Email" required>
+              </div>
+              
+              <div class="main-form-fields">
+                <label for="pro_phone_number">Numéro de téléphone</label>
+                <input type="tel" id="pro_phone_number" name="phone_number" placeholder="+33123456789">
+              </div>
+            </div>
+
+            <div class="main-form-container">  
+              <div class="main-form-fields">
+                <label for="pro_password">Mot de passe</label>
+                <input type="password" id="pro_password" name="password1" minlength="14"
+                  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_!@#$%^&*]).{14,}$" 
+                  title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
+                  required>
+                <button type="button" class="pro-register-toggle-password" onclick="toggleFormPassword1()" aria-label="Afficher le mot de passe">
+                  <i id="form-password1-eye" class="pro-icon-eye-open"></i>
+                </button>
+              </div>
+              
+              <div class="main-form-fields">
+                <label for="pro_password-confirm">Confirmer le mot de passe</label>
+                <input type="password" id="pro_password-confirm" name="password2" min_length="14"
+                  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_!@#$%^&*]).{14,}"
+                  title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
+                  required>
+                <button type="button" class="pro-register-toggle-password" onclick="toggleFormPassword2()" aria-label="Afficher le mot de passe">
+                    <i id="form-password2-eye" class="pro-icon-eye-open"></i>
+                </button>
+              </div>
+            </div>
+        </div>
+
+          <div class="main-form-container-button">
+            <button type="submit" id="pro_register-button" class="main-form-button">Créer mon compte</button>
           </div>
-
-          <div class="main-form-address">
-            <label for="pro_address">Adresse complète (rue, code postal, ville)</label>
-            <input type="text" id="pro_address" name="address" placeholder="Ex: 123 Rue de la Liberté 75001 Paris">
-          </div>
-
-          <div class="main-form-credentials">
-            <label for="pro_email">Email</label>
-            <input type="email" id="pro_email" name="email" placeholder="Email" required>
-
-            <label for="pro_password">Mot de passe</label>
-            <input type="password" id="pro_password" name="password1" minlength="14"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{14,}"
-              title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
-              required>
-            <label for="pro_password-confirm">Confirmer le mot de passe</label>
-            <input type="password" id="pro_password-confirm" name="password2" min_length="14"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{14,}"
-              title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
-              required>
-          </div>
-
-          <button type="submit" id="pro_register-button" class="main-form-button">Créer mon compte</button>
+        
         </form>
       </div>
     </div>

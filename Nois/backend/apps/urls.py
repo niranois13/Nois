@@ -1,10 +1,11 @@
 from django.urls import path
 from .views import (
+    UserViewSet,
     ClientViewSet, ClientAddressViewSet,
     ProfessionalViewSet, ProfessionalAddressViewSet,
     AppointmentViewSet, ClientAppointmentViewSet, ProfessionalAppointmentViewSet,
-    AvailabilityViewSet, ProfessionViewSet, QualificationViewSet,
-    ServiceViewSet, ProfessionalServiceViewSet, SearchView, ProfessionalRegistrationView
+    AvailabilityViewSet, QualificationViewSet,
+    ServiceViewSet, ProfessionalServiceViewSet, SearchView
 )
 
 urlpatterns = [
@@ -16,8 +17,8 @@ urlpatterns = [
     path('api/clients/<slug:slug>/address/<slug:address_slug>/', ClientAddressViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='client-address-detail'),
     #Professionals specific routes
     path('api/professionals/', ProfessionalViewSet.as_view({'get': 'list'}), name='professional-list'),
-    path('api/register/professionals/', ProfessionalRegistrationView.as_view(), name='register-professional'),
-    path('api/professionals/<slug:slug>/', ProfessionalViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-detail'),
+    path('api/register/professionals/', ProfessionalViewSet.as_view({'post': 'create'}), name='register-professional'),
+    path('api/professionals/<slug:slug>/', ProfessionalViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='professional-detail'),
     path('api/professionals/<slug:slug>/address/', ProfessionalAddressViewSet.as_view({'get': 'retrieve', 'post': 'create'}), name='professional-address-list'),
     path('api/professionals/<slug:slug>/address/<slug:address_slug>/', ProfessionalAddressViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-address-detail'),
     #Appointments specific routes
@@ -30,10 +31,7 @@ urlpatterns = [
     path('api/availabilities/', AvailabilityViewSet.as_view({'get': 'list'}), name='admin-availability-list'),
     path('api/professionals/<slug:slug>/availabilities/', AvailabilityViewSet.as_view({'get': 'retrieve', 'post': 'create'}), name='availability-list'),
     path('api/professionals/<slug:slug>/availabilities/<slug:availability_slug>/', AvailabilityViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='availability-detail'),
-    #Professions specific routes
-    path('api/professions/', ProfessionViewSet.as_view({'get': 'list', 'post': 'create'}), name='profession-list'),
-    path('api/professionals/<slug:slug>/professions/', ProfessionViewSet.as_view({'get': 'retrieve', 'post': 'create'}), name='professional-profession-list'),
-    #Qulifications specific routes
+    #Qualifications specific routes
     path('api/qualifications/', QualificationViewSet.as_view({'get': 'list'}), name="qualifications-list"),
     path('api/professionals/<slug:slug>/qualifications/', QualificationViewSet.as_view({'get': 'list', 'post': 'create'}), name='professional-qualifications-list'),
     path('api/professionals/<slug:slug>/qualifications/<slug:qualification_slug>', QualificationViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-qualification-detail'),
@@ -45,4 +43,6 @@ urlpatterns = [
     path('api/professionals/<slug:professional_slug>/services/<slug:service_slug>/', ProfessionalServiceViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='professional-service-detail'),
     #Search routes
     path('api/search/', SearchView.as_view(), name='search'),
+    path('api/users/get_my_slug/', UserViewSet.as_view({'get': 'get_my_slug'}), name="user-slug"),
+    path('api/users/check-auth/', UserViewSet.as_view({'get': 'check_auth_status'}), name="user-slug"),
 ]

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Noïs - Pro Dashboard</title>
+
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+
+<body>
+
+    <!-- NavBar -->
+    <nav class="navbar" role="navigation">
+        <a href="/" id="home_button" class="navbar-current-page" aria-current="page">Accueil</a>
+        <a href="#" class="navbar-button">Services</a>
+        <a href="#" class="navbar-button">Link 3</a>
+        <a href="#" class="navbar-button">Link 4</a>
+        <a href="#" id="login_button" class="login-link">Me connecter</a>
+        <a href="#" id="logout_button" class="login-link" style="display: none;">Me déconnecter</a>
+    </nav>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-title">
+            <h1>Noïs</h1>
+            <h2>Faciliter la vie, ensemble.</h2>
+        </div>
+        <div class="header-logo">
+            <img src="/resources/handshake-logo-white.png"
+                alt="Coeur composé de deux mains se serrant, symbolisant l'entraide et le soutien.">
+        </div>
+
+        <div class="page-title">
+            <div class="page-title-h3">
+                <h3> Bienvenue, </h3>
+            </div>
+            <div class="page-title-h4">
+                <span id="display_user_name"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="pro-dashb-main">
+
+        <div class="pro-dashb-main-top-container">
+
+            <div id="dashboard" class="pro-dashb-infos-container">
+                <div id="client-info" class="pro-dashb-infos">
+                    <p><span id="first_name"></span></p>
+                    <p><span id="last_name"></span></p>
+                    <p><span id="email"></span></p>
+                    <p><span id="phone_number"></span></p>
+                    <p><span id="profession"></span></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pro-dashb-main-lateral-panels">
+            <div class="pro-dashb-main-left-panel">
+            
+                <div class="pro-dashb-qual-container">
+                    <h2>Mes Qualifications</h2>
+                </div>
+                <div class="pro-dashb-service-container">
+                    <h2>Mes Services</h2>
+                </div>
+            </div>
+            
+            <div class="pro-dashb-main-right-panel">
+                <div class="pro-dashb-calendar">
+                    <h2>Mon planning</h2>
+                    <img src="/resources/react-big-calendar-example.png">
+                </div>
+                <div class="pro-dashb-historique">
+                    <h2>Mon historique</h2>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+<script src="/js/getuser.js"></script>
+
+</html>

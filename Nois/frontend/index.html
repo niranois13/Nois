@@ -27,24 +27,32 @@
 
   <!-- NavBar with modal login -->
   <nav class="navbar" role="navigation">
-    <a href="/" class="navbar-current-page" aria-current="page">Accueil</a>
-    <a href="#" class="login-link">Me connecter</a>
+    <a href="/" id="home_button" class="navbar-current-page" aria-current="page">Accueil</a>
     <a href="#" class="navbar-button">Services</a>
     <a href="#" class="navbar-button">Link 3</a>
     <a href="#" class="navbar-button">Link 4</a>
+    <a href="#" id="login_button" class="login-link">Me connecter</a>
+    <a href="#" id="logout_button" class="login-link" style="display: none;">Me déconnecter</a>
   </nav>
 
   <div id="loginModal" class="modal" aria-labelledby="loginTitle" aria-modal="true">
     <div class="modal-content">
-      <span class="close" aria-label="Fermer">&times;</span>
+      <span class="close" aria-label="Fermer">Fermer &times;</span>
       <h2 id="loginTitle">Connexion</h2>
-
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Email" required>
-
-      <label for="password">Mot de passe</label>
-      <input type="password" id="password" placeholder="Mot de passe" required>
-
+      <div class=modal-content-email-container>
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Email" required>
+      </div>
+      <div class="modal_login_passw">
+        <label for="password">Mot de passe</label>
+        <div class="passw_field_eye">
+          <input type="password" id="password" placeholder="Mot de passe" required>
+          <button type="button" class="toggle-password" onclick="togglePassword()"
+            aria-label="Afficher le mot de passe">
+            <i class="icon-eye-open"></i>
+          </button>
+        </div>
+      </div>
       <button id="login-button" class="modal-button">Se connecter</button>
     </div>
   </div>
@@ -63,34 +71,54 @@
     <!-- Client Modal Registration -->
     <div id="UserRegisterModal" class="modal" aria-labelledby="registerTitle" aria-modal="true">
       <div class="modal-content">
-        <span class="register-close" aria-label="Fermer la fenêtre d'inscription">&times;</span>
+        <span class="register-close" aria-label="Fermer la fenêtre d'inscription">Fermer &times;</span>
         <h2 id="registerTitle">Créer mon compte</h2>
 
-        <form aria-labelledby="registerTitle"></form>
+        <form id="UserRegisterForm" aria-labelledby="registerTitle">
 
-        <label for="user_first_name">Prénom</label>
-        <input type="text" id="user_first_name" placeholder="Prénom" required>
+          <label for="user_first_name">Prénom</label>
+          <input type="text" id="user_first_name" placeholder="Prénom" name="first_name" required>
 
-        <label for="user_last_name">Nom</label>
-        <input type="text" id="user_last_name" placeholder="Nom" required>
+          <label for="user_last_name">Nom</label>
+          <input type="text" id="user_last_name" placeholder="Nom" name="last_name" required>
 
-        <label for="user_phone_number">Numéro de téléphone</label>
-        <input type="tel" id="user_phone_number" placeholder="+33123456789">
+          <label for="user_phone_number">Numéro de téléphone</label>
+          <input type="tel" id="user_phone_number" placeholder="+33123456789" name="phone_number">
 
-        <div class="modal-content-checkbox">
-          <label for="user_is_helper">Je suis un.e aidant.e</label>
-          <input type="checkbox" id="user_is_helper" value="true" required>
-        </div>
-        <label for="user_address">Adresse complète (rue, code postal, ville)</label>
-        <input type="text" id="user_address" placeholder="Ex: 123 Rue de la Liberté, 75001 Paris">
+          <div class="modal-content-checkbox">
+            <label for="user_is_helper">Je suis un.e aidant.e</label>
+            <input type="checkbox" id="user_is_helper" value="true" name="is_helper">
+          </div>
+          <label for="user_address">Adresse complète (rue, code postal, ville)</label>
+          <input type="text" id="user_address" placeholder="Ex: 123 Rue de la Liberté, 75001 Paris" name="address">
 
-        <label for="user_email">Email</label>
-        <input type="email" id="user_email" placeholder="Email" required>
+          <label for="user_email">Email</label>
+          <input type="email" id="user_email" placeholder="Email" name="email" required>
 
-        <label for="user_password">Mot de passe</label>
-        <input type="password" id="user_password" placeholder="Mot de passe" required>
+          <div class="user_password1-container">
+            <label for="user_password">Mot de passe</label>
+            <input type="password" id="user_password" name="password1" minlength="14"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_!@#$%^&*]).{14,}"
+              title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
+              required>
+            <button type="button" class="register-toggle-password" onclick="toggleFormPassword1()"
+              aria-label="Afficher le mot de passe">
+              <i id="form-password1-eye" class="icon-eye-open"></i>
+            </button>
+          </div>
+          <div class="user_password2-container">
+            <label for="user_password-confirm">Confirmer le mot de passe</label>
+            <input type="password" id="user_password-confirm" name="password2" min_length="14"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_!@#$%^&*]).{14,}"
+              title="Le mot de passe doit contenir au moins 14 caractères, incluant une majuscule, une minuscule, un chiffre et un caractère spécial"
+              required>
+            <button type="button" class="register-toggle-password" onclick="toggleFormPassword2()"
+              aria-label="Afficher le mot de passe">
+              <i id="form-password2-eye" class="icon-eye-open"></i>
+            </button>
+          </div>
 
-        <button id="register-button" class="modal-button">Créer mon compte</button>
+          <button type="submit" id="user-register-button" class="modal-button">Créer mon compte</button>
         </form>
       </div>
     </div>
@@ -101,11 +129,13 @@
         placeholder="Rechercher des professionels ou des services." />
       <button type="submit" id="search-button" class="search-button" aria-placeholder="Rechercher">Rechercher</button>
     </div>
-    <div id="results-container"></div>
+    <div id="results-container">
+
+    </div>
 
   </header>
 
-  <main role="main">
+  <main role="main" class="index-main">
     <div class="home-main-content">
       <div class="home-textbox">
         <h3 class="home-textbox-title">Lorem Ipsum</h3>
@@ -130,6 +160,8 @@
   <script src="/js/login.js"></script>
   <script src="/js/register.js"></script>
   <script src="/js/search.js"></script>
+  <script src="/js/getuser.js"></script>
+  <script src="/js/getinfos.js"></script>
 </body>
 
 </html>

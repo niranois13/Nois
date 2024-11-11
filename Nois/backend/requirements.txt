@@ -19,3 +19,5 @@ python-dotenv==1.0.1
 phonenumbers
 sib-api-v3-sdk
 cryptography
+django-debug-toolbar
+unidecode

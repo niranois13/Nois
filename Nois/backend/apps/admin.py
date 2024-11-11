@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import User, Client, Professional, ClientAddress, ProfessionalAddress, Profession, Service, Qualification, Appointment, AppointmentLink, Availability
+from .models import User, Client, Professional, ClientAddress, ProfessionalAddress, Service, Qualification, Appointment, AppointmentLink, Availability
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
@@ -376,7 +376,7 @@ class ProfessionalAdmin(admin.ModelAdmin):
 
         obj.save()
         if form.is_valid():
-            print("Form valid")  # Debug
+            print("Form valid")
         else:
             print(form.errors)
         super().save_model(request, obj, form, change)
@@ -452,21 +452,9 @@ class AppointmentAdmin(admin.ModelAdmin):
         'appntmnt_link__professional__last_name'
         )
 
-class ProfessionAdmin(admin.ModelAdmin):
-    list_display = ['name', 'approved', 'proposed_by']
-    list_filter = ['approved']
-    search_fields = ['name']
-    actions = ['approve_professions']
-
-    def approve_professions(self, request, queryset):
-        queryset.update(approved=True)
-        self.message_user(request, "Selected professions have been approved.")
-    approve_professions.short_description = "Approve selected professions"
-
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Professional, ProfessionalAdmin)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Profession)
 admin.site.register(Qualification)
 admin.site.register(Appointment)
 admin.site.register(Service)

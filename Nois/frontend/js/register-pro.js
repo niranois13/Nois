@@ -2,23 +2,23 @@
 const form = document.getElementById("ProRegisterForm");
 const submitButton = document.getElementById("pro_register-button");
 
-form.addEventListener('submit', function(event) {
+form.addEventListener('submit', async function(event) {
   event.preventDefault();
-  console.log("Formulaire soumis, preventDefault appelé");
   submitButton.disabled = true;
 
   const formData = new FormData(this);
 
-  const requiredFields = ["email", "password1", "password2", "first_name", "last_name", "intervention_radius", "name"];
+  const requiredFields = ["email", "password1", "password2", "first_name", "last_name", "intervention_radius", "profession"]
   for (let field of requiredFields) {
     if (!formData.get(field)) {
-      alert(`Veuillez fournir ${field === "first_name" ? "un prénom" :
+      alert(`Veuillez fournir ${
+        field === "first_name" ? "un prénom" :
         field === "last_name" ? "un nom de famille" :
         field === "email" ? "un email" :
         field === "password1" ? "un mot de passe" :
         field === "password2" ? "la confirmation du mot de passe" :
         field === "intervention_radius" ? "un rayon d'intervention" :
-        field === "name" ? "une profession" :
+        field === "profession" ? "une profession" :
         field
       }.`);
       submitButton.disabled = false;
@@ -29,10 +29,16 @@ form.addEventListener('submit', function(event) {
   let dataToSend = {};
 
   for (let [key, value] of formData.entries()) {
-    if (key !== 'address' && key !== "password1" && key !== "password2") {
+    if (
+      key !== 'address' &&
+      key !== 'profession' &&
+      key !== 'custom_profession' &&
+      key !== "password1" &&
+      key !== "password2"
+    ) {
       if (key === "phone_number") {
-      value = formatPhoneNumber(value);
-      };
+        value = formatPhoneNumber(value);
+      }
       dataToSend[key] = value;
     }
   }
@@ -56,13 +62,11 @@ form.addEventListener('submit', function(event) {
   const fullAddress = formData.get("address");
   if (fullAddress && fullAddress.trim() !== "") {
     const addressParts = parseAddress(fullAddress);
-
     if (!addressParts.street || !addressParts.postal_code || !addressParts.city) {
-      alert("Erreur: L'adresse fournie semble incomplète. Veuillez vérifier que vous avez bien indiqué la rue, le code postal et la ville.");
+      alert("Erreur: L'adresse fournie semble incomplète.");
       submitButton.disabled = false;
       return;
     }
-
     dataToSend.Address = {
       street: addressParts.street,
       postal_code: addressParts.postal_code,
@@ -72,34 +76,48 @@ form.addEventListener('submit', function(event) {
     console.log("Aucune adresse fournie");
   }
 
-  fetch('api/register/professionals/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(dataToSend),
-    credentials: 'include'
-  })
-    .then(response => {
-      if (!response.ok) {
-        alert("Une erreur technique est survenue, veuillez nous en excuser.")
-        throw new Error("Network response was not ok");
-      }
-      console.log("Réponse reçue:", response);
-      response.json();
-    })
-    .then(data => {
-      console.log('Succès:', data);
-      alert("Inscription réussie ! Merci de votre confiance.");
-      window.location.href = "/";
-    })
-    .catch((error) => {
+  const profession = formData.get('profession');
+  const customProfession = formData.get('custom_profession');
+
+  if (profession && profession !== 'Autre') {
+    dataToSend['profession'] = profession;
+    dataToSend['custom_profession_approved'] = true;
+  } else if (profession === 'Autre' && customProfession && customProfession.trim() !="") {
+      dataToSend['profession'] = '';
+      dataToSend['custom_profession'] = customProfession;
+      dataToSend['custom_profession_approved'] = false;
+  } else {
+    alert("Erreur: Veuillez renseigner une profession valide.");
+    submitButton.disabled = false;
+    return;
+  }
+
+  try {
+    const professionalResponse = await fetch('api/register/professionals/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+      credentials: 'include'
+    });
+    console.log(dataToSend)
+
+    if (!professionalResponse.ok) {
+      submitButton.disabled = false;
+      throw new Error("Erreur lors de la création du professionnel");
+    }
+
+    alert("Inscription réussie ! Merci de votre confiance. Vous allez être redirigé vers la page d'accueil.");
+    window.location.href = "/";
+
+    } catch (error) {
+      submitButton.disabled = false;
       console.error('Erreur:', error);
       alert("Une erreur est survenue lors de l'inscription. Veuillez réessayer.");
-    })
-    .finally(() => {
+    } finally {
       submitButton.disabled = false;
-    })
+    }
 });
 
 
@@ -128,6 +146,38 @@ function formatPhoneNumber(phoneNumber) {
     return phoneNumber;
   }
 }
+
+// Functions to toggle diplay on/off on form passwords
+function toggleFormPassword1() {
+  const password1Field = document.getElementById('user_password');
+  const toggleIconPW1 = document.getElementById('form-password1-eye');
+
+    if (password1Field.type === 'password') {
+      password1Field.type = 'text';
+      toggleIconPW1.classList.add("icon-eye-closed");
+      toggleIconPW1.classList.remove("icon-eye-open");
+    } else {
+      password1Field.type = 'password';
+      toggleIconPW1.classList.remove("icon-eye-closed");
+      toggleIconPW1.classList.add("icon-eye-open");
+    }
+};
+
+function toggleFormPassword2() {
+    const password2Field = document.getElementById('user_password-confirm');
+    const toggleIconPW2 = document.getElementById('form-password2-eye');
+
+    if (password2Field.type === 'password') {
+      password2Field.type = 'text';
+      toggleIconPW2.classList.add("icon-eye-closed");
+      toggleIconPW2.classList.remove("icon-eye-open");
+    } else {
+      password2Field.type = 'password';
+      toggleIconPW2.classList.remove("icon-eye-closed");
+      toggleIconPW2.classList.add("icon-eye-open");
+    }
+};
+
 
 
 // Profession handler
@@ -176,3 +226,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+
+// Function to toggle diplay on/off on form passwords
+function toggleFormPassword1() {
+  const password1Field = document.getElementById('pro_password');
+  const toggleIconPW1 = document.getElementById('form-password1-eye');
+
+    if (password1Field.type === 'password') {
+      password1Field.type = 'text';
+      toggleIconPW1.classList.add("pro-icon-eye-closed");
+      toggleIconPW1.classList.remove("pro-icon-eye-open");
+    } else {
+      password1Field.type = 'password';
+      toggleIconPW1.classList.remove("pro-icon-eye-closed");
+      toggleIconPW1.classList.add("pro-icon-eye-open");
+    }
+};
+
+function toggleFormPassword2() {
+    const password2Field = document.getElementById('pro_password-confirm');
+    const toggleIconPW2 = document.getElementById('form-password2-eye');
+
+    if (password2Field.type === 'password') {
+      password2Field.type = 'text';
+      toggleIconPW2.classList.add("pro-icon-eye-closed");
+      toggleIconPW2.classList.remove("pro-icon-eye-open");
+    } else {
+      password2Field.type = 'password';
+      toggleIconPW2.classList.remove("pro-icon-eye-closed");
+      toggleIconPW2.classList.add("pro-icon-eye-open");
+    }
+};

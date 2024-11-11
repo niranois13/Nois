@@ -3,13 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchButton = document.getElementById('search-button');
   const resultsContainer = document.getElementById('results-container');
 
-  // Fonction pour effectuer la recherche
   async function performSearch() {
       const query = searchInput.value.trim();
+
       if (query.length === 0) {
           resultsContainer.innerHTML = '<p>Veuillez entrer un terme de recherche.</p>';
           return;
       }
+
 
       try {
           const response = await fetch(`/api/search/?q=${encodeURIComponent(query)}`);
@@ -26,16 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fonction pour afficher les résultats
   function displayResults(data) {
-      resultsContainer.innerHTML = ''; // Réinitialiser le conteneur des résultats
+    console.log(data);
+    resultsContainer.innerHTML = '';
 
-      if (data.professionals && data.professionals.length > 0) {
+      if (data.professionals && data.professionals.results && data.professionals.results.length > 0) {
+
           const professionalsList = document.createElement('ul');
-          data.professionals.forEach(professional => {
+          data.professionals.results.forEach(professional => {
+            const first_name = professional.first_name;
+            const last_name = professional.last_name;
+            const slug = professional.slug;
+            let profession;
+
+            if (!professional.profession) {
+              if (professional.custom_profession) {
+                profession = professional.custom_profession;
+              }
+            } else {
+              profession = professional.profession;
+            };
+
               const li = document.createElement('li');
               li.innerHTML = `
-                  <a href="/professionnel/${professional.slug}/">
-                      ${professional.first_name} ${professional.last_name}<br>
-                      ${professional.profession ? professional.profession.name : 'Profession non renseignée'}
+                  <a href="/professionals/${slug}/" class="profile-link">
+                      ${first_name} ${last_name} - ${profession}
                   </a>
               `;
               professionalsList.appendChild(li);
@@ -66,10 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   }
 
-  // Écouter l'événement de clic sur le bouton de recherche
   searchButton.addEventListener('click', performSearch);
-
-  // Optionnel : Écouter l'événement "Enter" dans le champ de recherche
   searchInput.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
           performSearch();

@@ -1,11 +1,12 @@
 from rest_framework import viewsets, permissions
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from ..models import Professional, ProfessionalAddress
 from ..serializers import ProfessionalSerializer
 from ..serializers.address_serializers import ProfessionalAddressSerializer
 from ..permissions import IsOwnerOrAdmin
-
 
 class ProfessionalViewSet(viewsets.ModelViewSet):
     queryset = Professional.objects.all()
@@ -15,23 +16,30 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action == 'list':
             return [permissions.IsAdminUser()]
-        elif self.action in [
-            'retrieve', 'update', 'partial_update', 'destroy'
-            ]:
+        elif self.action in ['update', 'partial_update', 'destroy']:
             return [IsOwnerOrAdmin()]
-        elif self.action =='create':
+        elif self.action in ['retrieve', 'create']:
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
 
     def get_object(self):
+        """
+        Récupère un objet Professional par son slug.
+        """
         queryset = self.get_queryset()
         slug = self.kwargs.get(self.lookup_field)
         obj = get_object_or_404(queryset, slug=slug)
         self.check_object_permissions(self.request, obj)
         return obj
 
-    def perform_create(self, serializer):
-        return super().perform_create(serializer)
+    def get_serializer_context(self):
+        """
+        Modifie la méthode pour ajouter des informations supplémentaires au contexte.
+        """
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
 
 class ProfessionalAddressViewSet(viewsets.ModelViewSet):
     queryset = ProfessionalAddress.objects.all()

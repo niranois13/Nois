@@ -3,18 +3,28 @@ from .Address import Address
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
 from .UserManager import User
-from .Profession import Profession
+from .Service import Service
 
 User = get_user_model()
 
 class Professional(User):
-    profession = models.ForeignKey(
-        Profession,
-        on_delete=models.SET_NULL,
+    profession = models.CharField(
+        max_length=100,
+        blank=True,
         null=True,
+        unique=True
+        )
+    custom_profession = models.CharField(
+        max_length=100,
+        unique=True,
+        blank=True,
+        null=True
+        )
+    custom_profession_approved = models.BooleanField(
+        default=False
         )
     services = models.ManyToManyField(
-        'Service',
+        Service,
         related_name='professionals_list',
         blank=True,
         )

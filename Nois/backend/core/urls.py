@@ -20,7 +20,7 @@ from apps.views.auth_views import CustomTokenObtainPairView
 from apps.views.logout_views import LogoutView
 from apps.views.act_acc_views import activate_account
 from apps.views.search_views import SearchView
-
+from debug_toolbar.toolbar import debug_toolbar_urls
 admin.autodiscover()
 
 urlpatterns = [
@@ -51,4 +51,4 @@ urlpatterns = [
         name='search'
         ),
     path('', include('apps.urls')),
-]
+] + debug_toolbar_urls()
